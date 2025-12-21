@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Research Pack v0.2",
+  "type": "object",
+  "required": ["pack_id", "created_at", "schema_version", "phases", "entrypoints"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "0.2.0" },
+    "pack_id": { "type": "string", "minLength": 8 },
+    "created_at": { "type": "string", "format": "date-time" },
+    "phases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["phase_id", "name", "expected_artifacts", "skip_consequence"],
+        "properties": {
+          "phase_id": { "type": "string" },
+          "name": { "type": "string" },
+          "expected_artifacts": { "type": "array", "items": { "type": "string" } },
+          "skip_consequence": { "type": "string", "minLength": 10 }
+        }
+      }
+    },
+    "entrypoints": {
+      "type": "object",
+      "required": ["sources_path", "runs_path", "artifacts_path", "hashes_path"],
+      "properties": {
+        "sources_path": { "type": "string" },
+        "runs_path": { "type": "string" },
+        "artifacts_path": { "type": "string" },
+        "hashes_path": { "type": "string" }
+      }
+    },
+    "notes": { "type": ["string", "null"] }
+  }
+}

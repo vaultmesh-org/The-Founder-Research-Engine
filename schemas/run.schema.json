@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Phase Run v0.2",
+  "type": "object",
+  "required": ["run_id", "pack_id", "phase_id", "started_at", "ended_at", "inputs", "engine", "outputs", "hashes", "warnings"],
+  "properties": {
+    "run_id": { "type": "string" },
+    "pack_id": { "type": "string" },
+    "phase_id": { "type": "string" },
+    "iteration": { "type": "integer", "minimum": 1 },
+    "started_at": { "type": "string", "format": "date-time" },
+    "ended_at": { "type": ["string", "null"], "format": "date-time" },
+    "inputs": {
+      "type": "object",
+      "required": ["source_ids", "artifact_ids"],
+      "properties": {
+        "source_ids": { "type": "array", "items": { "type": "string" } },
+        "artifact_ids": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "engine": {
+      "type": "object",
+      "required": ["provider", "model", "max_tokens"],
+      "properties": {
+        "provider": { "type": "string" },
+        "model": { "type": "string" },
+        "max_tokens": { "type": "integer", "minimum": 256 },
+        "temperature": { "type": ["number", "null"], "minimum": 0.0, "maximum": 2.0 }
+      }
+    },
+    "prompt_refs": {
+      "type": "object",
+      "required": ["system_prompt", "phase_prompt"],
+      "properties": {
+        "system_prompt": { "type": "string" },
+        "phase_prompt": { "type": "string" },
+        "developer_prompt": { "type": ["string", "null"] }
+      }
+    },
+    "outputs": {
+      "type": "object",
+      "required": ["artifact_ids"],
+      "properties": {
+        "artifact_ids": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["code", "message", "severity", "consequence"],
+        "properties": {
+          "code": { "type": "string" },
+          "message": { "type": "string" },
+          "severity": { "type": "string", "enum": ["info", "warn", "block"] },
+          "consequence": { "type": "string" },
+          "related_phase_id": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "hashes": {
+      "type": "object",
+      "required": ["inputs_hash", "prompt_hash", "run_hash"],
+      "properties": {
+        "inputs_hash": { "type": "string" },
+        "prompt_hash": { "type": "string" },
+        "run_hash": { "type": ["string", "null"] }
+      }
+    },
+    "parent_run_id": { "type": ["string", "null"] }
+  }
+}

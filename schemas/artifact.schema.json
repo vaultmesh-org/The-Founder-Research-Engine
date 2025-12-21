@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Artifact v0.2",
+  "type": "object",
+  "required": ["artifact_id", "pack_id", "name", "phase_id", "version", "created_at", "produced_by_run_id", "content_type", "hashes", "lineage"],
+  "properties": {
+    "artifact_id": { "type": "string" },
+    "pack_id": { "type": "string" },
+    "name": { "type": "string" },
+    "phase_id": { "type": "string" },
+    "version": { "type": "integer", "minimum": 1 },
+    "created_at": { "type": "string", "format": "date-time" },
+    "produced_by_run_id": { "type": "string" },
+    "content_type": { "type": "string", "enum": ["json", "markdown", "text"] },
+    "content_path": { "type": ["string", "null"] },
+    "hashes": {
+      "type": "object",
+      "required": ["content_hash", "prompt_hash", "inputs_hash"],
+      "properties": {
+        "content_hash": { "type": "string" },
+        "prompt_hash": { "type": "string" },
+        "inputs_hash": { "type": "string" }
+      }
+    },
+    "lineage": {
+      "type": "object",
+      "required": ["parent_artifact_id", "supersedes", "delta"],
+      "properties": {
+        "parent_artifact_id": { "type": ["string", "null"] },
+        "supersedes": { "type": "array", "items": { "type": "string" } },
+        "delta": {
+          "type": ["object", "null"],
+          "properties": {
+            "summary": { "type": "string" },
+            "added": { "type": "array", "items": { "type": "string" } },
+            "removed": { "type": "array", "items": { "type": "string" } },
+            "changed": { "type": "array", "items": { "type": "string" } },
+            "stats": {
+              "type": "object",
+              "properties": {
+                "addedCount": { "type": "number" },
+                "removedCount": { "type": "number" },
+                "changedCount": { "type": "number" }
+              }
+            },
+            "confidence": { "type": "string", "enum": ["high", "medium", "low"] }
+          }
+        }
+      }
+    },
+    "trust_summary": {
+      "type": ["object", "null"],
+      "properties": {
+        "dominant_sources": { "type": "array", "items": { "type": "string" } },
+        "confidence_score": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "notes": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

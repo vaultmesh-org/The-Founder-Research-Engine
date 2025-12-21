@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Source v0.2",
+  "type": "object",
+  "required": ["source_id", "filename", "mime_type", "ingested_at", "provenance", "hashes"],
+  "properties": {
+    "source_id": { "type": "string" },
+    "filename": { "type": "string" },
+    "mime_type": { "type": "string" },
+    "ingested_at": { "type": "string", "format": "date-time" },
+    "provenance": {
+      "type": "object",
+      "required": ["source_type", "authority_level", "confidence_weight"],
+      "properties": {
+        "source_type": { "type": "string", "enum": ["regulator", "operator", "vendor", "internal", "speculative"] },
+        "authority_level": { "type": "string", "enum": ["binding", "advisory", "informational"] },
+        "confidence_weight": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "chain_of_custody": { "type": ["string", "null"] },
+        "owner": { "type": ["string", "null"] },
+        "origin_url": { "type": ["string", "null"] }
+      }
+    },
+    "hashes": {
+      "type": "object",
+      "required": ["blake3"],
+      "properties": {
+        "blake3": { "type": "string", "minLength": 16 },
+        "sha256": { "type": ["string", "null"] }
+      }
+    },
+    "size_bytes": { "type": ["integer", "null"], "minimum": 0 },
+    "tags": { "type": "array", "items": { "type": "string" } }
+  }
+}
