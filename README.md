@@ -1,8 +1,13 @@
 # Founder Research Engine
 
+> [!WARNING]
+> **Archived historical prototype (December 2025).**
+>
+> This repository preserves an old Replit experiment for inspection. It is not maintained, not production-ready, not a WitnessOps product, and should not be used for high-stakes work. **Do not enter a real API key or upload sensitive documents.** The current default branch contains known functional and verification-contract defects documented below.
+
 **Forensic reconstruction of reality. Not research—proof surface discovery.**
 
-**Version:** 0.2.0 | **Status:** Beta | **License:** MIT
+**Version:** 0.2.0 | **Status:** Archived prototype | **License:** MIT
 
 ## v0.2 Release Notes
 
@@ -19,6 +24,31 @@
 - ✅ Schema validation (Ajv)
 
 **⚠️ Breaking Change:** v0.1 data is not compatible. See [CHANGELOG.md](./CHANGELOG.md) for migration guide.
+
+## Known limitations
+
+The following limitations were identified during a public-surface audit on 2026-08-19:
+
+- The configured Anthropic model, `claude-sonnet-4-20250514`, has been retired, so model-backed processing is not currently operational.
+- Run creation is wired with IDs where the run model expects full source and artifact objects; recorded input lineage and `inputs_hash` are therefore unreliable.
+- IndexedDB queries use undeclared Dexie compound indexes, which can prevent artifact lookup during processing.
+- Source content is stored in an internal `_content` field that the ZIP exporter removes; exported packs do not contain the original source documents required for reconstruction.
+- The browser stores the Anthropic API key in `localStorage`.
+- Schema-validation code is present but is not wired into the active application path.
+
+## What pack verification means
+
+The included verifier checks whether files match the manifest and whether those hashes reproduce the root stored **inside the same ZIP**. This is an internal-consistency check only.
+
+It does **not**:
+
+- authenticate the author or producer;
+- prove when the pack was created;
+- establish an externally anchored root;
+- prove the correctness of model-generated content; or
+- detect coordinated replacement of files, manifest, and root.
+
+The project does not implement a digital signature or independent trust anchor. Historical references below to “signed,” “proof,” “reproducibility,” or “verified” should be read in light of these limits.
 
 ---
 
@@ -48,7 +78,7 @@ The engine enforces:
 - **Facts separated from assumptions**
 - **Trust boundaries on source material**
 - **Provenance tracking on all artifacts**
-- **Cryptographic signatures on outputs**
+- **Content hashes on outputs**
 
 ## The Six Phases
 
@@ -194,6 +224,8 @@ Max 5 items per list.
 
 ## Installation
 
+> Historical instructions only. The current repository is not expected to complete its workflow successfully. Do not provide a real API key or sensitive documents.
+
 ```bash
 # Clone the repository
 git clone https://github.com/vaultmesh-org/The-Founder-Research-Engine.git
@@ -219,7 +251,7 @@ Visit `http://localhost:3000`
 4. **Run Phase 1** - Start with Containment (do not skip)
 5. **Progress Sequentially** - Each phase builds on previous artifacts
 6. **Iterate as Needed** - Re-run phases when new context emerges
-7. **Download Signed Artifacts** - Export all outputs with cryptographic proofs
+7. **Export Pack** - Download the historical hash-manifest pack; see the verification limits above
 
 ## Trust Levels Explained
 
@@ -230,9 +262,9 @@ Visit `http://localhost:3000`
 - **Third-Party** (Amber) - External reports, vendor docs. Context-dependent.
 - **Speculative** (Red) - Marketing, projections, assumptions. Treat as hypothesis.
 
-The engine includes trust metadata in all processing and artifact signatures.
+The engine records trust metadata alongside artifact hashes.
 
-## Artifact Signatures
+## Artifact Hash Metadata
 
 Every artifact includes:
 ```json
@@ -254,11 +286,7 @@ Every artifact includes:
 }
 ```
 
-This enables:
-- Reproducibility verification
-- Audit trail construction
-- Model performance tracking
-- Prompt evolution analysis
+This records content and execution metadata. It can support later comparison, but the current implementation does not independently prove reproducibility, authenticity, or creation time.
 
 ## When to Use This
 
@@ -310,7 +338,7 @@ npm run lint
 - **Tailwind CSS** - Styling
 - **Lucide React** - Icons
 - **Anthropic Claude API** - LLM processing
-- **Web Crypto API** - Artifact signing
+- **Web Crypto API** - Content hashing
 
 ## License
 
@@ -318,15 +346,7 @@ MIT
 
 ## Contributing
 
-This is v0.1. It is intentionally incomplete.
-
-Priority improvements:
-1. Iteration delta tracking
-2. Multi-model comparison
-3. Artifact chain verification
-4. Export to LAWCHAIN format
-
-See [ROADMAP.md](./ROADMAP.md) for details.
+This repository is preserved as a historical prototype and is intended to return to archived, read-only status after this documentation correction. The roadmap and contributing documents are historical and may contradict the implemented code.
 
 ## Warning
 
